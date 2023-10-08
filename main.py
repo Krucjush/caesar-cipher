@@ -1,9 +1,13 @@
 import art
+import os
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 print(art.logo)
 
-
+def clean():
+    if os.name == 'nt':
+        _ = os.system('cls')
+    else: os.name('clear')
 
 def caesar(start_text, shift_amount, cipher_direction):
     end_text = ''
@@ -32,6 +36,10 @@ while run:
     
     caesar(text, shift, direction)
     go_again = input("Type 'yes' if you want to go again. Otherwise type 'no'.\n")
-    if go_again == 'no':
+    if go_again not in ['yes', 'no']:
+        exit(f"unknown command {go_again}.\nAborting...")
+    elif go_again == 'no':
         run = False
         print("Goodbye")
+    else:
+        clean()
