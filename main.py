@@ -1,13 +1,6 @@
-import art
-import os
+from tkinter import *
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-print(art.logo)
-
-def clean():
-    if os.name == 'nt':
-        _ = os.system('cls')
-    else: os.name('clear')
 
 def caesar(start_text, shift_amount, cipher_direction):
     end_text = ''
@@ -24,22 +17,47 @@ def caesar(start_text, shift_amount, cipher_direction):
             end_text += alphabet[new_position]
         else:
             end_text += character
-    print(f"Here's the {cipher_direction}d result: {end_text}")
+    output_label.config(text=end_text)
 
-run = True
-while run:
-    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
-    if direction != 'encode' and direction != 'decode':
-        exit(f'Unknown command {direction}.\nAborting.')
-    text = input('Type your message:\n').lower()
-    shift = int(input('Type the shift number:\n'))
-    
-    caesar(text, shift, direction)
-    go_again = input("Type 'yes' if you want to go again. Otherwise type 'no'.\n")
-    if go_again not in ['yes', 'no']:
-        exit(f"unknown command {go_again}.\nAborting...")
-    elif go_again == 'no':
-        run = False
-        print("Goodbye")
-    else:
-        clean()
+
+window = Tk()
+window.title("Caesar Cipher")
+window.config(padx=100, pady=20)
+
+title_label = Label(text="Caesar Cipher")
+title_label.grid(row=0, column=0, columnspan=2, pady=30)
+
+entry_label = Label(text="Write your input here")
+entry_label.grid(row=1, column=0, columnspan=2)
+
+entry = Entry()
+entry.grid(row=2, column=0, columnspan=2)
+
+pad_label = Label()
+pad_label.grid(row=3, column=0, pady=10)
+
+spinbox_label = Label(text="Choose the shift number")
+spinbox_label.grid(row=4, column=0, columnspan=2)
+
+spinbox = Spinbox(from_=0, to=999, width=5)
+spinbox.grid(row=5, column=0, columnspan=2)
+
+
+def encode_button_pressed():
+    caesar(entry.get(), int(spinbox.get()), 'encode')
+
+
+def decode_button_pressed():
+    caesar(entry.get(), int(spinbox.get()), 'decode')
+
+
+encode_button = Button(text="Encode", command=encode_button_pressed)
+encode_button.grid(row=6, column=0, pady=30)
+
+decode_button = Button(text="Decode", command=decode_button_pressed)
+decode_button.grid(row=6, column=1, pady=30)
+
+output_label = Label()
+output_label.grid(row=7, column=0, columnspan=2)
+
+window.mainloop()
